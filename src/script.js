@@ -1,5 +1,7 @@
 import './style.css'
 import * as THREE from "three"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { ARButton } from "three/examples/jsm/webxr/ARButton";
 
 import vshader from '../shader/v.vert'
 import fshader from '../shader/f.frag'
@@ -9,12 +11,16 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.xr.enabled = true;
 document.body.appendChild( renderer.domElement );
 
 const light = new THREE.AmbientLight(0x404040);
 scene.add(light);
 
-// var controls = new THREE.OrbitControls(camera, renderer.domElement);
+// var controls = new OrbitControls(camera, renderer.domElement);
+
+const arbtn = ARButton.createButton(renderer);
+document.body.appendChild(arbtn);
 
 let uniforms = {
   colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
@@ -29,10 +35,15 @@ let m =  new THREE.ShaderMaterial({
 })
 
 
-var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
-var mesh = new THREE.Mesh( geometry, m );
-mesh.frustumCulled = false;
-scene.add( mesh );
+// var geometry        = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
+// var mesh            = new THREE.Mesh( geometry, m );
+// mesh.frustumCulled  = false;
+// scene.add( mesh );
+
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const cube     = new THREE.Mesh( geometry, material );
+scene.add( cube );
 
 // var objLoader = new THREE.OBJLoader();
 // objLoader.setPath("../01/asset/");
@@ -52,6 +63,7 @@ camera.position.z = 5;
 function animate() {
     requestAnimationFrame( animate );
     m.uniforms.iTime.value += 0.01;
+    // controls.update();
     renderer.render( scene, camera );
 };
 animate();
