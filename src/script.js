@@ -73,6 +73,7 @@
 // We first have to import it because it is a javascript module
 import * as THREE from "three"
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 let camera, scene, renderer;
 let mesh;
@@ -100,17 +101,27 @@ function init() {
   scene.add(light);
 
   const geometry = new THREE.IcosahedronGeometry(0.1, 1);
-  const material = new THREE.MeshPhongMaterial({
-    color      :  new THREE.Color("rgb(226,35,213)"),
-    shininess  :  6,
-    flatShading:  true,
-    transparent: 1,
-    opacity    : 0.8
-  });
+  // const material = new THREE.MeshPhongMaterial({
+  //   color      :  new THREE.Color("rgb(226,35,213)"),
+  //   shininess  :  6,
+  //   flatShading:  true,
+  //   transparent: 1,
+  //   opacity    : 0.8
+  // });
   
-  mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(0, 0, -0.5);
-  scene.add(mesh);
+  // mesh = new THREE.Mesh(geometry, material);
+  // mesh.position.set(0, 0, -0.5);
+  // scene.add(mesh);
+
+  var loader = new GLTFLoader();
+  loader.load( './assets/Jupiter.glb', function ( gltf )
+  {
+      var scn = gltf.scene;
+      // scn.scale.set(2, 2, 2);
+      // scn.position.y = 4;
+      scn.position.set(0, 0, -3.0);
+      scene.add(scn);
+  } );
 
   // Add the AR button to the body of the DOM
   document.body.appendChild(ARButton.createButton(renderer));
