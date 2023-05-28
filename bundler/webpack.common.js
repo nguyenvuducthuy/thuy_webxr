@@ -90,6 +90,10 @@ module.exports = {
                   'raw-loader',
                   'glslify-loader'
                 ]
+            },
+            {
+                test: /\.(glb)$/i,
+                type: 'asset/resource'
             }
         ]
     }
