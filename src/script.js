@@ -69,84 +69,200 @@
 // animate();
 
 
-// To start an AR scene with webXR, we can use a handy button provided by three.js
-// We first have to import it because it is a javascript module
+// // To start an AR scene with webXR, we can use a handy button provided by three.js
+// // We first have to import it because it is a javascript module
+// import * as THREE from "three"
+// import { ARButton } from "three/examples/jsm/webxr/ARButton";
+// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+// import sl from '../assets/Jupiter.glb';
+
+// let camera, scene, renderer;
+// let mesh;
+
+// init();
+// animate();
+
+// function init() {
+//   const container = document.createElement('div');
+//   document.body.appendChild(container);
+
+//   scene = new THREE.Scene();
+
+//   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+
+//   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+//   renderer.setPixelRatio(window.devicePixelRatio);
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+//   // This next line is important to to enable the renderer for WebXR
+//   renderer.xr.enabled = true; // New!
+//   container.appendChild(renderer.domElement);
+
+//   var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+//   light.position.set(0.5, 1, 0.25);
+//   scene.add(light);
+
+//   // const geometry = new THREE.IcosahedronGeometry(0.1, 1);
+//   // const material = new THREE.MeshPhongMaterial({
+//   //   color      :  new THREE.Color("rgb(226,35,213)"),
+//   //   shininess  :  6,
+//   //   flatShading:  true,
+//   //   transparent: 1,
+//   //   opacity    : 0.8
+//   // });
+  
+//   // mesh = new THREE.Mesh(geometry, material);
+//   // mesh.position.set(0, 0, -0.5);
+//   // scene.add(mesh);
+
+//   var loader = new GLTFLoader();
+//   loader.load( sl, function ( gltf )
+//   {
+//       mesh = gltf.scene;
+//       mesh.scale.set(.4,.4,.4);
+//       // mesh.position.y = 4;
+//       // mesh.rotation.y = 30;
+//       mesh.position.set(0, 0, -3.0);
+//       scene.add(mesh);
+//   } );
+
+//   // Add the AR button to the body of the DOM
+//   document.body.appendChild(ARButton.createButton(renderer));
+
+//   window.addEventListener('resize', onWindowResize, false);
+// }
+
+// function onWindowResize() {
+//   camera.aspect = window.innerWidth / window.innerHeight;
+//   camera.updateProjectionMatrix();
+
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+// }
+
+// function animate() {
+//   if (mesh)
+//   {
+//     mesh.rotation.y += .001;
+//   }
+//   requestAnimationFrame(animate);
+//   renderer.setAnimationLoop(render);
+// }
+
+// function render() {      
+//   renderer.render(scene, camera);
+// }
+
 import * as THREE from "three"
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import sl from '../assets/Jupiter.glb';
 
+import _Sun from "../assets/SolarTexture/2k_sun.jpg";
+import _Mercury from "../assets/SolarTexture/2k_mercury.jpg";
+import _Venus from "../assets/SolarTexture/2k_venus.jpg";
+import _Earth from "../assets/SolarTexture/2k_earth.jpg";
+import _Mars from "../assets/SolarTexture/2k_mars.jpg";
+import _Jupiter from "../assets/SolarTexture/2k_jupiter.jpg";
+import _Saturn from "../assets/SolarTexture/2k_saturn.jpg";
+import _Neptune from "../assets/SolarTexture/2k_neptune.jpg";
+import _Uranus from "../assets/SolarTexture/2k_uranus.jpg";
+
 let camera, scene, renderer;
-let mesh;
+let controller;
 
 init();
 animate();
 
 function init() {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
+
+  const container = document.createElement( 'div' );
+  document.body.appendChild( container );
 
   scene = new THREE.Scene();
 
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  // This next line is important to to enable the renderer for WebXR
-  renderer.xr.enabled = true; // New!
-  container.appendChild(renderer.domElement);
+  const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+  light.position.set( 0.5, 1, 0.25 );
+  scene.add( light );
 
-  var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-  light.position.set(0.5, 1, 0.25);
-  scene.add(light);
+  //
 
-  // const geometry = new THREE.IcosahedronGeometry(0.1, 1);
-  // const material = new THREE.MeshPhongMaterial({
-  //   color      :  new THREE.Color("rgb(226,35,213)"),
-  //   shininess  :  6,
-  //   flatShading:  true,
-  //   transparent: 1,
-  //   opacity    : 0.8
-  // });
-  
-  // mesh = new THREE.Mesh(geometry, material);
-  // mesh.position.set(0, 0, -0.5);
-  // scene.add(mesh);
+  renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.xr.enabled = true;
+  container.appendChild( renderer.domElement );
 
-  var loader = new GLTFLoader();
-  loader.load( sl, function ( gltf )
-  {
-      mesh = gltf.scene;
-      mesh.scale.set(.4,.4,.4);
-      // mesh.position.y = 4;
-      // mesh.rotation.y = 30;
-      mesh.position.set(0, 0, -3.0);
-      scene.add(mesh);
-  } );
+  //
 
-  // Add the AR button to the body of the DOM
-  document.body.appendChild(ARButton.createButton(renderer));
+  document.body.appendChild( ARButton.createButton( renderer ) );
 
-  window.addEventListener('resize', onWindowResize, false);
+  //
+
+  // const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 );
+  const geometry = new THREE.SphereGeometry(.04, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+
+  var texturesList = [
+    _Sun,
+    _Mercury,
+    _Venus,
+    _Earth,
+    _Mars,
+    _Jupiter,
+    _Saturn,
+    _Neptune,
+    _Uranus
+  ];
+
+  function onSelect() {
+
+    // const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
+    const material = new THREE.MeshPhongMaterial();
+    //initialization
+    const loader = new THREE.TextureLoader();
+    //loading texture
+    // const texture = loader.load ('textures/texture.png')
+    var randIndex = THREE.Math.randInt(0, texturesList.length - 1);
+    var texture = loader.load(texturesList[randIndex]);
+
+    material.map = texture;
+
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
+    mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
+    scene.add( mesh );
+
+  }
+
+  controller = renderer.xr.getController( 0 );
+  controller.addEventListener( 'select', onSelect );
+  scene.add( controller );
+
+  //
+
+  window.addEventListener( 'resize', onWindowResize );
+
 }
 
 function onWindowResize() {
+
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
+
+//
 
 function animate() {
-  if (mesh)
-  {
-    mesh.rotation.y += .001;
-  }
-  requestAnimationFrame(animate);
-  renderer.setAnimationLoop(render);
+
+  renderer.setAnimationLoop( render );
+
 }
 
-function render() {      
-  renderer.render(scene, camera);
+function render() {
+
+  renderer.render( scene, camera );
+
 }
