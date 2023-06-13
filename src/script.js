@@ -188,7 +188,7 @@ function init() {
       const mesh = new THREE.Mesh( geometry, material );
       reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
       // mesh.scale.y = Math.random() * 2 + 1;
-      mesh.scale.set(11,11,11);
+      mesh.scale.set(6,6,6);
       scene.add( mesh );
 
     }
