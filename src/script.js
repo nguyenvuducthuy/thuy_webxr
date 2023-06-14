@@ -93,8 +93,7 @@ function init() {
     // });
 
     const mesh = new THREE.Mesh( geometry, material );
-    mesh.position.set( 0, 0, 0 ).applyMatrix4( controller.matrixWorld );
-    mesh.scale.set( .3, .3, .3 );
+    mesh.position.set( 0, 0, -.3 ).applyMatrix4( controller.matrixWorld );
     mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
     scene.add( mesh );
 
