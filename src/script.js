@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { ARButton } from "three/examples/jsm/webxr/ARButton";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import sl from '../assets/Jupiter.glb';
+import sl from '../assets/planet.glb';
 
 import _Sun from "../assets/SolarTexture/2k_sun.jpg";
 import _Mercury from "../assets/SolarTexture/2k_mercury.jpg";
@@ -47,7 +47,7 @@ function init() {
   //
 
   // const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 );
-  const geometry = new THREE.SphereGeometry(.04, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+  const geometry = new THREE.SphereGeometry(.04, 50, 50);
 
   var texturesList = [
     _Sun,
@@ -66,16 +66,35 @@ function init() {
     // const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
     const material = new THREE.MeshPhongMaterial();
     //initialization
-    const loader = new THREE.TextureLoader();
+    const tex_loader = new THREE.TextureLoader();
     //loading texture
-    // const texture = loader.load ('textures/texture.png')
     var randIndex = THREE.Math.randInt(0, texturesList.length - 1);
-    var texture = loader.load(texturesList[randIndex]);
+    var texture = tex_loader.load(texturesList[randIndex]);
 
     material.map = texture;
 
+    // var gltf_loader = new GLTFLoader();
+    // gltf_loader.load( sl, function ( gltf )
+    // {
+    //     var scn = gltf.scene;
+    //     scn.visible = true;
+    //     scn.material = material;
+    //     scn.position.set( 0, 0, 0 ).applyMatrix4( controller.matrixWorld );
+    //     scn.quaternion.setFromRotationMatrix( controller.matrixWorld );
+    //     scn.scale.set(1, 1, 1);
+
+    //     // console.log(scn);
+
+    //     // mixer = new THREE.AnimationMixer(scn);
+    //     // action = mixer.clipAction(gltf.animations[ 0 ]);
+    //     // action.setLoop(THREE.LoopRepeat, 0);
+
+    //     scene.add(scn);
+    // });
+
     const mesh = new THREE.Mesh( geometry, material );
-    mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
+    mesh.position.set( 0, 0, 0 ).applyMatrix4( controller.matrixWorld );
+    mesh.scale.set( .3, .3, .3 );
     mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
     scene.add( mesh );
 
